@@ -49,7 +49,7 @@ volumes: []) {
         upstreamEnv = getUpstreamEnv()
       }
       
-      reqVarKeys = reqVars.keySet()
+      reqVarKeys = new ArrayList(reqVars.keySet())
       for (i = 0; i < reqVarKeys.size(); i++ ){
         echo "${reqVarKeys[i]} : ${reqVars.get(reqVarKeys[i])}"
       }
