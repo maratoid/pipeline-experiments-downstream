@@ -7,8 +7,6 @@ import hudson.EnvVars
 import org.jenkinsci.plugins.workflow.cps.EnvActionImpl
 import hudson.model.Cause
 
-@Field final String PIPELINE = 'upstream'
-
 def getUpstreamEnv() {
   def upstreamEnv = new EnvVars()
   def upstreamCause = currentBuild.rawBuild.getCause(Cause$UpstreamCause)
@@ -28,14 +26,14 @@ def getUpstreamEnv() {
 properties([
   pipelineTriggers([
     triggers: [
-      $class: 'jenkins.triggers.ReverseBuildTrigger', 
+      [$class: 'jenkins.triggers.ReverseBuildTrigger', 
       upstreamProjects: "pipeline-experiments/master", 
-      threshold: hudson.model.Result.SUCCESS
+      threshold: hudson.model.Result.SUCCESS]
     ]
   ])
 ])
 
-podTemplate(label: "jenkins-gke-${PIPELINE}", containers: [
+podTemplate(label: "jenkins-gke-downstream", containers: [
   containerTemplate(name: 'gke', image: 'gcr.io/sds-readiness/jenkins-gke:latest', ttyEnabled: true, command: 'cat', alwaysPullImage: true),
 ],
 volumes: []) {
@@ -50,7 +48,11 @@ volumes: []) {
       reqVars = unpackReqVars {
         upstreamEnv = getUpstreamEnv()
       }
-      echo reqVars
+      
+      reqVarKeys = reqVars.keySet()
+      for (i = 0; i < reqVarKeys.size(); i++ ){
+        echo "${reqVarKeys[i]} : ${reqVars.get(reqVarKeys[i])}"
+      }
     }
   }
 }
