@@ -51,16 +51,18 @@ podTemplate(label: "jenkins-gke-${PIPELINE}", containers: [
   containerTemplate(name: 'gke', image: 'gcr.io/sds-readiness/jenkins-gke:latest', ttyEnabled: true, command: 'cat', alwaysPullImage: true),
 ],
 volumes: []) {
-  container('gke') { 
-    checkout scm
-    depVars = unpackDependencyVars {
-      upstreamEnv = getUpstreamEnv()
-    }
-    echo depVars 
+  node ("jenkins-gke-downstream") {
+    container('gke') { 
+      checkout scm
+      depVars = unpackDependencyVars {
+        upstreamEnv = getUpstreamEnv()
+      }
+      echo depVars 
 
-    reqVars = unpackReqVars {
-      upstreamEnv = getUpstreamEnv()
+      reqVars = unpackReqVars {
+        upstreamEnv = getUpstreamEnv()
+      }
+      echo reqVars
     }
-    echo reqVars
   }
 }
