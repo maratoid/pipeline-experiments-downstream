@@ -25,18 +25,6 @@ def getUpstreamEnv() {
 }
 
 // add triggers
-def triggers = []
-def upstream = pipeline.get(PIPELINE).upstream
-if (upstream) {
-  for (i = 0; i < upstream.size(); i++) {
-    triggers << [
-      $class: 'jenkins.triggers.ReverseBuildTrigger', 
-      upstreamProjects: "${pipeline.get(upstream[i]).pipeline}/master", 
-      threshold: hudson.model.Result.SUCCESS
-    ]
-  } 
-}
-
 properties([
   pipelineTriggers([
     triggers: [
