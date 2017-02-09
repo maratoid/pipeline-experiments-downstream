@@ -2,7 +2,7 @@
 @Library('pipeline')
 import net.zonarsystems.pipeline.ApplicationPipeline
 
-applicationPipeline = new ApplicationPipeline(
+def applicationPipeline = new ApplicationPipeline(
   steps: steps,
   application: 'loadbalancer'
 )
