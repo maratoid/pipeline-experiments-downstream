@@ -2,5 +2,8 @@
 @Library('pipeline')
 import net.zonarsystems.pipeline.ApplicationPipeline
 
-def parameters = [steps: steps, application: 'loadbalancer']
-def applicationPipeline = new ApplicationPipeline(parameters)
+applicationPipeline = new ApplicationPipeline(
+  'loadbalancer',
+  steps
+)
+applicationPipeline.pipelineRun()
