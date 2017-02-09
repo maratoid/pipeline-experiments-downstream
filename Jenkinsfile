@@ -6,4 +6,3 @@ applicationPipeline = new ApplicationPipeline(
   steps: steps,
   application: 'loadbalancer'
 )
-applicationPipeline.pipelineRun()
